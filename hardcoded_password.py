@@ -1,5 +1,7 @@
+import os
+
 def get_database_connection():
     user = "admin"
-    password = "password123"  # Hardcoded password (vulnerability)
+    password = os.getenv("DB_PASSWORD")  # Secure password retrieval
     connection_string = f"postgresql://{user}:{password}@localhost/mydatabase"
     return connection_string
