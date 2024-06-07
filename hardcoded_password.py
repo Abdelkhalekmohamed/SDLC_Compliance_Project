@@ -5,3 +5,4 @@ def get_database_connection():
     password = os.getenv("DB_PASSWORD")  # Secure password retrieval
     connection_string = f"postgresql://{user}:{password}@localhost/mydatabase"
     return connection_string
+
