@@ -6,3 +6,4 @@ def get_database_connection():
     connection_string = f"postgresql://{user}:{password}@localhost/mydatabase"
     return connection_string
 
+
