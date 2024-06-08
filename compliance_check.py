@@ -14,7 +14,7 @@ GITHUB_REPO_URL = 'https://api.github.com/repos/Abdelkhalekmohamed/SDLC_Complian
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')  # Store your token in an environment variable for security
 
 
-def download_files(repo_url, local_dir):
+def download_files(repo_url, local_directory):
     headers = {}
     if GITHUB_TOKEN:
         headers['Authorization'] = f'token {GITHUB_TOKEN}'
@@ -32,23 +32,23 @@ def download_files(repo_url, local_dir):
             return
         for file in files:
             if file['type'] == 'file':
-                download_file(file['download_url'], local_dir, file['name'])
+                download_file(file['download_url'], local_directory, file['name'])
             elif file['type'] == 'dir':
-                new_local_dir = os.path.join(local_dir, file['name'])
+                new_local_dir = os.path.join(local_directory, file['name'])
                 os.makedirs(new_local_dir, exist_ok=True)
                 download_files(file['url'], new_local_dir)
     else:
         logging.error(f"Failed to retrieve repository contents: {response.status_code}")
 
 
-def download_file(url, local_dir, filename):
+def download_file(url, local_directory, filename):
     headers = {}
     if GITHUB_TOKEN:
         headers['Authorization'] = f'token {GITHUB_TOKEN}'
 
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        with open(os.path.join(local_dir, filename), 'wb') as file:
+        with open(os.path.join(local_directory, filename), 'wb') as file:
             file.write(response.content)
     else:
         logging.error(f"Failed to download file: {response.status_code}")
@@ -75,14 +75,16 @@ def read_csv_report(file_path):
         headers = csv_reader.fieldnames
         logging.info(",".join(headers))  # Print header
         for row in csv_reader:
-            logging.info(",".join(row.values()))  # Print each row
+            if isinstance(row, dict):
+                row_values = list(row.values())  # Convert to list to avoid attribute reference error
+                logging.info(",".join(row_values))  # Print each row
+            else:
+                logging.error(f"Expected row to be dict, got {type(row)}: {row}")
 
 
 if __name__ == "__main__":
-    local_dir = 'repo_files'
-    os.makedirs(local_dir, exist_ok=True)
-    download_files(GITHUB_REPO_URL, local_dir)
-    run_bandit(local_dir)
+    project_directory = 'repo_files'
+    os.makedirs(project_directory, exist_ok=True)
+    download_files(GITHUB_REPO_URL, project_directory)
+    run_bandit(project_directory)
     read_csv_report('compliance_report.csv')
-
-
