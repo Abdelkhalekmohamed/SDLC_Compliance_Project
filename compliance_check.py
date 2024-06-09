@@ -90,7 +90,7 @@ def read_csv_report(file_path):
 
 
 if __name__ == "__main__":
-    project_directory = 'repo_files'
+    project_directory = 'vulnerabilities'  # Update the path to the 'vulnerabilities' directory
     if not os.path.exists(project_directory):
         os.makedirs(project_directory, exist_ok=True)
         download_files(GITHUB_REPO_URL, project_directory)
