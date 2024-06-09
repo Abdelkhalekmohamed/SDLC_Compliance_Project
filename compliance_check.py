@@ -13,7 +13,6 @@ GITHUB_REPO_URL = 'https://api.github.com/repos/Abdelkhalekmohamed/SDLC_Complian
 # Optional: Use your GitHub token for authentication if the repo is private
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')  # Store your token in an environment variable for security
 
-
 def download_files(repo_url, local_directory):
     headers = {}
     if GITHUB_TOKEN:
@@ -41,7 +40,6 @@ def download_files(repo_url, local_directory):
     else:
         logging.error(f"Failed to retrieve repository contents: {response.status_code}")
 
-
 def download_file(url, local_directory, filename):
     headers = {}
     if GITHUB_TOKEN:
@@ -56,7 +54,6 @@ def download_file(url, local_directory, filename):
     else:
         logging.error(f"Failed to download file: {response.status_code}")
 
-
 def run_bandit(directory):
     output_file = 'data/compliance_report.csv'
     if not os.path.exists('data'):
@@ -68,7 +65,6 @@ def run_bandit(directory):
         logging.info(f"Bandit output:\n{result.stdout}")
     else:
         logging.error(f"Bandit analysis failed: {result.stderr}")
-
 
 def read_csv_report(file_path):
     if not os.path.exists(file_path):
@@ -88,9 +84,8 @@ def read_csv_report(file_path):
             else:
                 logging.error(f"Expected row to be dict, got {type(row)}: {row}")
 
-
 if __name__ == "__main__":
-    project_directory = 'vulnerabilities'  # Update the path to the 'vulnerabilities' directory
+    project_directory = 'repo_files'
     if not os.path.exists(project_directory):
         os.makedirs(project_directory, exist_ok=True)
         download_files(GITHUB_REPO_URL, project_directory)
