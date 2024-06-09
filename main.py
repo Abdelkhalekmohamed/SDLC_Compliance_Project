@@ -13,4 +13,3 @@ if __name__ == "__main__":
     os.makedirs(local_dir, exist_ok=True)
     download_files(GITHUB_REPO_URL, local_dir)
     run_bandit(local_dir)
-
