@@ -22,21 +22,22 @@ def download_files(repo_url, local_directory):
     response = requests.get(repo_url, headers=headers)
     logging.info(f"Fetching URL: {repo_url}")
     logging.info(f"Response Status Code: {response.status_code}")
-    logging.info(f"Response Content: {response.text}")
 
     if response.status_code == 200:
         try:
             files = response.json()
-        except requests.exceptions.JSONDecodeError as e:
+        except ValueError as e:
             logging.error(f"JSON decode error: {e}")
             return
         for file in files:
+            file_path = os.path.join(local_directory, file['name'])
             if file['type'] == 'file':
-                download_file(file['download_url'], local_directory, file['name'])
+                if not os.path.exists(file_path):
+                    download_file(file['download_url'], local_directory, file['name'])
             elif file['type'] == 'dir':
-                new_local_dir = os.path.join(local_directory, file['name'])
-                os.makedirs(new_local_dir, exist_ok=True)
-                download_files(file['url'], new_local_dir)
+                if not os.path.exists(file_path):
+                    os.makedirs(file_path, exist_ok=True)
+                download_files(file['url'], file_path)
     else:
         logging.error(f"Failed to retrieve repository contents: {response.status_code}")
 
@@ -48,14 +49,19 @@ def download_file(url, local_directory, filename):
 
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        with open(os.path.join(local_directory, filename), 'wb') as file:
+        file_path = os.path.join(local_directory, filename)
+        with open(file_path, 'wb') as file:
             file.write(response.content)
+        logging.info(f"Downloaded file: {filename}")
     else:
         logging.error(f"Failed to download file: {response.status_code}")
 
 
 def run_bandit(directory):
-    command = ['bandit', '-r', directory, '-f', 'csv', '-o', 'compliance_report.csv']
+    output_file = 'data/compliance_report.csv'
+    if not os.path.exists('data'):
+        os.makedirs('data')
+    command = ['bandit', '-r', directory, '-f', 'csv', '-o', output_file]
     result = subprocess.run(command, capture_output=True, text=True)
     if result.returncode == 0:
         logging.info("Bandit analysis completed successfully.")
@@ -73,10 +79,11 @@ def read_csv_report(file_path):
         csv_reader = csv.DictReader(file)
         logging.info("Reading CSV report from compliance_report.csv")
         headers = csv_reader.fieldnames
-        logging.info(",".join(headers))  # Print header
+        if headers:
+            logging.info(",".join(headers))  # Print header
         for row in csv_reader:
             if isinstance(row, dict):
-                row_values = list(row.values())  # Convert to list to avoid attribute reference error
+                row_values = [str(value) for value in row.values()]  # Convert each value to a string
                 logging.info(",".join(row_values))  # Print each row
             else:
                 logging.error(f"Expected row to be dict, got {type(row)}: {row}")
@@ -84,7 +91,11 @@ def read_csv_report(file_path):
 
 if __name__ == "__main__":
     project_directory = 'repo_files'
-    os.makedirs(project_directory, exist_ok=True)
-    download_files(GITHUB_REPO_URL, project_directory)
+    if not os.path.exists(project_directory):
+        os.makedirs(project_directory, exist_ok=True)
+        download_files(GITHUB_REPO_URL, project_directory)
+    else:
+        logging.info("Repo files already exist, skipping download.")
+
     run_bandit(project_directory)
-    read_csv_report('compliance_report.csv')
+    read_csv_report('data/compliance_report.csv')
