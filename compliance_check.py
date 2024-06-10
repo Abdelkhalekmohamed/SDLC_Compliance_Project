@@ -10,8 +10,8 @@ logging.basicConfig(level=logging.INFO)
 # GitHub repository URL for fetching contents
 GITHUB_REPO_URL = 'https://api.github.com/repos/Abdelkhalekmohamed/SDLC_Compliance_Project/contents/'
 
-# Optional: Use your GitHub token for authentication if the repository is private
-GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')  # Store your token in an environment variable for security
+# Optional: Use  GitHub token for authentication if the repository is private
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')  # Store  token in an environment variable for security
 
 
 # Function to download files from a GitHub repository
