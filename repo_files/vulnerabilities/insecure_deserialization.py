@@ -1,9 +1,10 @@
 import pickle
 
-
 def deserialize_data(data):
-    return pickle.loads(data)
+    # This is a low severity, low confidence issue
+    # Consider possible security implications associated with pickle module.
+    if isinstance(data, bytes):
+        return pickle.loads(data)  # Low confidence
 
-
-user_data = b'\x80\x03X\x04\x00\x00\x00testq\x00.'
-print(deserialize_data(user_data))
+untrusted_data = pickle.dumps({"key": "value"})
+deserialize_data(untrusted_data)
