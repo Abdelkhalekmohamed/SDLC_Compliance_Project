@@ -12,6 +12,7 @@ The repository contains sample code files that intentionally include security vu
 ├── analyze_report.py
 ├── data/
 │   └── compliance_report.csv
+<<<<<<< HEAD
 ├── repo_files/
 │   └── vulnerabilities/
 │       ├── command_injection.py
@@ -22,6 +23,17 @@ The repository contains sample code files that intentionally include security vu
 │       ├── insecure_randomness.py
 │       ├── sql_injection.py
 │       └── xss_vulnerability.py
+=======
+├── repo_files/                                                                                                                                                      └── vulnerabilities/
+   ├── command_injection.py
+    ├── eval_usage.py
+    ├── hardcoded_password.py
+    ├── insecure_deserialization.py
+     ├── insecure_hash.py
+     ├── insecure_randomness.py
+      ├── sql_injection.py
+      └── xss_vulnerability.py
+>>>>>>> 8ca45be1517b3057deb620f54af57492e6d01092
 
 ### Prerequisites
 - Python 3.8+
@@ -80,11 +92,4 @@ These libraries are included with Python and do not need to be installed separat
 1. Ensure that your GitHub token (if needed) is set in your environment variables for secure access to private repositories.
 2. Execute the compliance check script to analyze the repository's code.
 3. Use the analyze report script to generate visualizations of the compliance report.
-
-### Running Tests
-
-To run the unit tests for the compliance check and analysis scripts, use the following command:
-
-```sh
-python -m unittest discover tests/
 
