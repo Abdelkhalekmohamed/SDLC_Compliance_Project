@@ -22,9 +22,7 @@ The repository contains sample code files that intentionally include security vu
 │       ├── insecure_randomness.py
 │       ├── sql_injection.py
 │       └── xss_vulnerability.py
-└── tests/
-    ├── test_compliance_check.py
-    └── test_analyze_report.py
+
 ### Prerequisites
 - Python 3.8+
 - Required Python packages (listed in `requirements.txt`)

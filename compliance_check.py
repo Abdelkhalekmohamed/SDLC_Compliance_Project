@@ -13,6 +13,7 @@ GITHUB_REPO_URL = 'https://api.github.com/repos/Abdelkhalekmohamed/SDLC_Complian
 # Optional: Use your GitHub token for authentication if the repo is private
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')  # Store your token in an environment variable for security
 
+
 def download_files(repo_url, local_directory):
     headers = {}
     if GITHUB_TOKEN:
@@ -40,6 +41,7 @@ def download_files(repo_url, local_directory):
     else:
         logging.error(f"Failed to retrieve repository contents: {response.status_code}")
 
+
 def download_file(url, local_directory, filename):
     headers = {}
     if GITHUB_TOKEN:
@@ -54,17 +56,30 @@ def download_file(url, local_directory, filename):
     else:
         logging.error(f"Failed to download file: {response.status_code}")
 
+
 def run_bandit(directory):
     output_file = 'data/compliance_report.csv'
     if not os.path.exists('data'):
         os.makedirs('data')
+
     command = ['bandit', '-r', directory, '-f', 'csv', '-o', output_file]
     result = subprocess.run(command, capture_output=True, text=True)
-    if result.returncode == 0:
-        logging.info("Bandit analysis completed successfully.")
-        logging.info(f"Bandit output:\n{result.stdout}")
+
+    if result.returncode in (0, 1):
+        # Bandit completed successfully, even if issues were found (exit code 1).
+        logging.info("Bandit analysis completed with issues found.")
     else:
-        logging.error(f"Bandit analysis failed: {result.stderr}")
+        # Handle other exit codes that indicate errors.
+        logging.error(f"Bandit analysis failed with return code {result.returncode}.")
+        logging.error(f"Error output:\n{result.stderr}")
+
+    logging.info(f"Bandit output:\n{result.stdout}")
+
+    if os.path.exists(output_file):
+        logging.info(f"CSV output written to file: {output_file}")
+    else:
+        logging.error(f"CSV output file {output_file} was not created.")
+
 
 def read_csv_report(file_path):
     if not os.path.exists(file_path):
@@ -83,6 +98,7 @@ def read_csv_report(file_path):
                 logging.info(",".join(row_values))  # Print each row
             else:
                 logging.error(f"Expected row to be dict, got {type(row)}: {row}")
+
 
 if __name__ == "__main__":
     project_directory = 'repo_files'

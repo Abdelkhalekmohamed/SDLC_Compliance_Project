@@ -1,15 +1,13 @@
 import os
 import logging
-from compliance_check import download_files, run_bandit
+from compliance_check import run_bandit
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 
-# GitHub repository URL
-GITHUB_REPO_URL = 'https://api.github.com/repos/Abdelkhalekmohamed/SDLC_Compliance_Project/contents/'
-
 if __name__ == "__main__":
-    local_dir = 'repo_files'
-    os.makedirs(local_dir, exist_ok=True)
-    download_files(GITHUB_REPO_URL, local_dir)
-    run_bandit(local_dir)
+    local_dir = 'repo_files'  # Directory where your cloned files are located
+    if not os.path.exists(local_dir):
+        logging.error(f"Directory {local_dir} does not exist. Please ensure the repository is cloned correctly.")
+    else:
+        run_bandit(local_dir)

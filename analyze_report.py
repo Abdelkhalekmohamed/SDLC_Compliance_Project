@@ -1,8 +1,12 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import os
+
+# Define the path to the compliance report
+report_path = os.path.join('data', 'compliance_report.csv')
 
 # Load the compliance report
-df = pd.read_csv('compliance_report.csv')
+df = pd.read_csv(report_path)
 
 # Print the first few rows of the dataframe
 print("First few rows of the compliance report:")
