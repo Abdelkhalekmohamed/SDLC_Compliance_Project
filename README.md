@@ -15,7 +15,7 @@ The repository contains sample code files that intentionally include security vu
 <<<<<<< HEAD
 ├── repo_files/
 │   └── vulnerabilities/
-│       ├── command_injection.py
+│       ├── path_traversal.py
 │       ├── eval_usage.py
 │       ├── hardcoded_password.py
 │       ├── insecure_deserialization.py
@@ -35,10 +35,11 @@ The repository contains sample code files that intentionally include security vu
       └── xss_vulnerability.py
 >>>>>>> 8ca45be1517b3057deb620f54af57492e6d01092
 
+
 ### Prerequisites
 - Python 3.8+
 - Required Python packages (listed in `requirements.txt`)
-- Power BI Desktop for visualization 
+- Power BI Desktop for visualization
 
 ### Requirements
 The following libraries are required to run this project:
@@ -50,7 +51,6 @@ These libraries need to be installed via `pip`:
 - `bandit`: Used for performing static security analysis on the Python code.
 - `matplotlib`: Used for creating visualizations of the data from the CSV report.
 - `flask`: Used for potential web-based interaction or further extensions.
-- `unittest`: Used for running unit tests on the project scripts.
 
 #### Standard Libraries
 These libraries are included with Python and do not need to be installed separately:
@@ -82,14 +82,8 @@ These libraries are included with Python and do not need to be installed separat
     python analyze_report.py
     ```
 
-5. **Run the cleanup script (if needed)**:
-    ```sh
-    python cleanup.py
-    ```
-
 ### Usage
 
 1. Ensure that your GitHub token (if needed) is set in your environment variables for secure access to private repositories.
 2. Execute the compliance check script to analyze the repository's code.
 3. Use the analyze report script to generate visualizations of the compliance report.
-
