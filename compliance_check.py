@@ -110,3 +110,4 @@ if __name__ == "__main__":
 
     run_bandit(project_directory)
     read_csv_report('data/compliance_report.csv')
+    
