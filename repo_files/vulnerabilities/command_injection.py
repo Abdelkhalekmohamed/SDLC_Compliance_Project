@@ -1,11 +1,13 @@
-import subprocess
+import pickle
 
-def run_command(user_input):
-    # Medium severity, low confidence issue (potential command injection)
-    command = f"echo {user_input}"
-    subprocess.run(command, shell=True)  # Using shell=True can be risky
+
+def insecure_deserialize(data):
+    # High severity, low confidence issue (insecure deserialization)
+    obj = pickle.loads(data)  # Deserializing potentially unsafe data
+    print(f"Deserialized object: {obj}")
+
 
 if __name__ == "__main__":
-    user_input = "hello; rm -rf /"
-    run_command(user_input)
+    serialized_data = pickle.dumps({"key": "value"})
+    insecure_deserialize(serialized_data)
 
