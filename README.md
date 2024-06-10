@@ -1,39 +1,35 @@
-# Automated SDLC Compliance Checker for IEC 62443 Standards
+# SDLC Compliance Automation for IEC 62443 Standards
 
-### Project Overview
-This project includes scripts and tools for automating security compliance checks against IEC 62443 standards.
-The repository contains sample code files that intentionally include security vulnerabilities. The project uses Bandit for static analysis to detect these vulnerabilities and generates compliance reports which can be analyzed and visualized.
+## Project Overview
+This project focuses on automating the process of checking SDLC compliance against IEC 62443 standards using Python for data collection and analysis, and Power BI for visualization and reporting.
+
+## Objective
+To develop a mini project that automates the detection of secure coding practices and generates compliance reports through a Python script and a Power BI dashboard.
+
+## Scope
+This project will automate the detection of common security vulnerabilities in code repositories and generate compliance reports, which can then be visualized and explored using Power BI.
+
+## Project Structure
+ionally include security vulnerabilities. The project uses Bandit for static analysis to detect these vulnerabilities and generates compliance reports which can be analyzed and visualized.
+
 ### Project Structure
 ├── README.md
 ├── requirements.txt
 ├── .gitignore
 ├── compliance_check.py
-├── cleanup.py
 ├── analyze_report.py
 ├── data/
 │   └── compliance_report.csv
-<<<<<<< HEAD
 ├── repo_files/
-│   └── vulnerabilities/
-│       ├── path_traversal.py
-│       ├── eval_usage.py
-│       ├── hardcoded_password.py
-│       ├── insecure_deserialization.py
-│       ├── insecure_hash.py
-│       ├── insecure_randomness.py
-│       ├── sql_injection.py
-│       └── xss_vulnerability.py
-=======
-├── repo_files/                                                                                                                                                      └── vulnerabilities/
-   ├── command_injection.py
-    ├── eval_usage.py
-    ├── hardcoded_password.py
-    ├── insecure_deserialization.py
-     ├── insecure_hash.py
-     ├── insecure_randomness.py
-      ├── sql_injection.py
-      └── xss_vulnerability.py
->>>>>>> 8ca45be1517b3057deb620f54af57492e6d01092
+│   ├── command_injection.py
+│   ├── eval_usage.py
+│   ├── hardcoded_password.py
+│   ├── insecure_deserialization.py
+│   ├── insecure_hash.py
+│   ├── insecure_randomness.py
+│   ├── path_traversal.py
+│   ├── sql_injection.py
+│   └── xss_example.py
 
 
 ### Prerequisites
@@ -59,8 +55,19 @@ These libraries are included with Python and do not need to be installed separat
 - `subprocess`: Used for running Bandit as a subprocess.
 - `csv`: Used for reading the CSV compliance report.
 
-### Setup Instructions
+## Setup Instructions
 
+### Step 1: Install Required Tools
+1. **Install Python**:
+    - Download and install Python from the official website: [Python.org](https://www.python.org/)
+2. **Install Power BI Desktop**:
+    - Download and install Power BI Desktop from the official website: [Power BI](https://powerbi.microsoft.com/desktop/)
+
+### Step 2: Create a Sample Code Repository
+1. **Set up a GitHub repository**:
+    - Create a GitHub repository and add a few sample code files that intentionally contain security vulnerabilities (e.g., hardcoded passwords, SQL injections).
+
+### Step 3: Generate Compliance Report
 1. **Clone the repository**:
     ```sh
     git clone https://github.com/Abdelkhalekmohamed/Automated-SDLC-Compliance-Checker-for-IEC-62443-Standards.git
@@ -77,13 +84,49 @@ These libraries are included with Python and do not need to be installed separat
     python compliance_check.py
     ```
 
-4. **Analyze the compliance report**:
-    ```sh
-    python analyze_report.py
-    ```
+### Step 4: Power BI Dashboard Development
+1. **Import Data into Power BI**:
+    - Open Power BI Desktop.
+    - Import `compliance_report.csv` as a new data source.
 
-### Usage
+2. **Create Visualizations**:
+    - **Overview Chart**: Bar chart showing the count of issues by severity (e.g., High, Medium, Low).
+    - **Detail Table**: Table displaying filename, line number, issue text, confidence, and severity.
 
+3. **Interactive Elements**:
+    - Add slicers to filter data by severity and confidence levels.
+    - Create a drill-down functionality to view issues in detail.
+
+### Step 5: Testing and Validation
+1. **Run the Python Script**:
+    - Execute the Python script to generate the `compliance_report.csv`.
+
+2. **Update Power BI Dashboard**:
+    - Refresh the data in Power BI to reflect the latest compliance report.
+    - Verify that the visualizations accurately represent the data.
+
+### Step 6: Documentation
+1. **Project Report**:
+    - Document the process, including setup, script functionalities, and Power BI dashboard design.
+    - Provide a user guide for running the Python script and interacting with the Power BI dashboard.
+
+## Deliverables
+1. **Python Script**:
+    - A well-documented Python script (`compliance_check.py`).
+
+2. **Power BI Dashboard**:
+    - A Power BI file (`SDLC_Compliance_Dashboard.pbix`) with interactive visualizations.
+
+3. **Documentation**:
+    - A detailed report (`Project_Report.pdf`) describing the project workflow, script usage, and dashboard features.
+
+## Usage
 1. Ensure that your GitHub token (if needed) is set in your environment variables for secure access to private repositories.
 2. Execute the compliance check script to analyze the repository's code.
 3. Use the analyze report script to generate visualizations of the compliance report.
+
+## Contributing
+If you would like to contribute to this project, please fork the repository and submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
