@@ -1,12 +1,10 @@
 import sqlite3
 
+def get_user_data(username):
+    # High severity, low confidence issue (potential SQL injection)
+    query = f"SELECT * FROM users WHERE username = '{username}'"  # Potentially vulnerable to SQL injection
+    print(f"Executing query: {query}")
 
-def get_user_data(user_id):
-    conn = sqlite3.connect('example.db')
-    cursor = conn.cursor()
-    # Vulnerable to SQL Injection
-    query = f"SELECT * FROM users WHERE id = {user_id}"
-    cursor.execute(query)
-    result = cursor.fetchall()
-    conn.close()
-    return result
+if __name__ == "__main__":
+    user_input = "admin' OR '1'='1"
+    get_user_data(user_input)
