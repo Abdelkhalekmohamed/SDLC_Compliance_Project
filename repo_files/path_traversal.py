@@ -11,3 +11,5 @@ def read_file(filename):
 if __name__ == "__main__":
     user_input = "../passwd"  # User input that can lead to path traversal
     read_file(user_input)
+import subprocess
+subprocess.Popen(['ls', '-l'])

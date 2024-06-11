@@ -6,3 +6,9 @@ user_input = "2 + 2"
 print(evaluate_expression(user_input))
 import subprocess
 subprocess.Popen(['ls', '-l'])
+import subprocess
+subprocess.Popen(['ls', '-l'])
+import subprocess
+subprocess.Popen(['ls', '-l'])
+import pickle
+pickle.loads(b'')

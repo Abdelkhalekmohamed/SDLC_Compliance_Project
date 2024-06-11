@@ -10,3 +10,5 @@ import subprocess
 subprocess.Popen(['ls', '-l'])
 import subprocess
 subprocess.Popen(['ls', '-l'])
+import pickle
+pickle.loads(b'')

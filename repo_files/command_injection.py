@@ -13,3 +13,7 @@ if __name__ == "__main__":
 
 import subprocess
 subprocess.Popen(['ls', '-l'])
+import pickle
+pickle.loads(b'')
+import subprocess
+subprocess.Popen(['ls', '-l'])

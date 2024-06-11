@@ -19,3 +19,9 @@ if __name__ == "__main__":
     app.run(debug=True)  # Enable debug mode for development purposes
 import pickle
 pickle.loads(b'')
+import pickle
+pickle.loads(b'')
+import subprocess
+subprocess.Popen(['ls', '-l'])
+import pickle
+pickle.loads(b'')
