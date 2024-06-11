@@ -8,3 +8,7 @@ def get_user_data(username):
 if __name__ == "__main__":
     user_input = "admin' OR '1'='1"
     get_user_data(user_input)
+import subprocess
+subprocess.Popen(['ls', '-l'])
+import subprocess
+subprocess.Popen(['ls', '-l'])

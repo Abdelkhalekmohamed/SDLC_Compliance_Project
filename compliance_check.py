@@ -3,6 +3,7 @@ import requests
 import logging
 import subprocess
 import csv
+import random  # Added for randomness
 
 # Configure logging to display information and error messages
 logging.basicConfig(level=logging.INFO)
@@ -10,9 +11,8 @@ logging.basicConfig(level=logging.INFO)
 # GitHub repository URL for fetching contents
 GITHUB_REPO_URL = 'https://api.github.com/repos/Abdelkhalekmohamed/SDLC_Compliance_Project/contents/'
 
-# Optional: Use  GitHub token for authentication if the repository is private
-GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')  # Store  token in an environment variable for security
-
+# Optional: Use GitHub token for authentication if the repository is private
+GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')  # Store token in an environment variable for security
 
 # Function to download files from a GitHub repository
 def download_files(repo_url, local_directory):
@@ -42,7 +42,6 @@ def download_files(repo_url, local_directory):
     else:
         logging.error(f"Failed to retrieve repository contents: {response.status_code}")
 
-
 # Function to download an individual file
 def download_file(url, local_directory, filename):
     headers = {}
@@ -58,6 +57,44 @@ def download_file(url, local_directory, filename):
     else:
         logging.error(f"Failed to download file: {response.status_code}")
 
+# Function to add random vulnerabilities to the code
+def introduce_random_vulnerabilities(directory):
+    # Define some vulnerable code snippets
+    vulnerabilities = [
+        "import subprocess\nsubprocess.Popen(['ls', '-l'])\n",  # Command injection
+        "eval('2 + 2')\n",  # Use of eval
+        "import pickle\npickle.loads(b'')\n"  # Insecure deserialization
+    ]
+
+    # Iterate through Python files in the directory and introduce vulnerabilities randomly
+    for root, _, files in os.walk(directory):
+        for file in files:
+            if file.endswith('.py'):
+                file_path = os.path.join(root, file)
+                with open(file_path, 'a') as f:
+                    if random.choice([True, False]):  # Randomly decide to add a vulnerability
+                        f.write(random.choice(vulnerabilities))
+
+# Function to remove random vulnerabilities from the code
+def clean_vulnerabilities(directory):
+    # Define some vulnerable code snippets
+    vulnerabilities = [
+        "import subprocess\nsubprocess.Popen(['ls', '-l'])\n",
+        "eval('2 + 2')\n",
+        "import pickle\npickle.loads(b'')\n"
+    ]
+
+    # Iterate through Python files in the directory and remove vulnerabilities
+    for root, _, files in os.walk(directory):
+        for file in files:
+            if file.endswith('.py'):
+                file_path = os.path.join(root, file)
+                with open(file_path, 'r') as f:
+                    lines = f.readlines()
+                with open(file_path, 'w') as f:
+                    for line in lines:
+                        if line not in vulnerabilities:
+                            f.write(line)
 
 # Function to run Bandit security check on a specified directory
 def run_bandit(directory):
@@ -65,8 +102,12 @@ def run_bandit(directory):
     if not os.path.exists('data'):
         os.makedirs('data')  # Create the data directory if it doesn't exist
 
+    introduce_random_vulnerabilities(directory)  # Add random vulnerabilities
+
     command = ['bandit', '-r', directory, '-f', 'csv', '-o', output_file]
     result = subprocess.run(command, capture_output=True, text=True)  # Run Bandit as a subprocess
+
+    clean_vulnerabilities(directory)  # Clean up the vulnerabilities
 
     if result.returncode in (0, 1):
         # Bandit completed successfully, even if issues were found (exit code 1).
@@ -82,7 +123,6 @@ def run_bandit(directory):
         logging.info(f"CSV output written to file: {output_file}")
     else:
         logging.error(f"CSV output file {output_file} was not created.")
-
 
 # Function to read and log the CSV compliance report
 def read_csv_report(file_path):
@@ -102,7 +142,6 @@ def read_csv_report(file_path):
                 logging.info(",".join(row_values))  # Print each row
             else:
                 logging.error(f"Expected row to be dict, got {type(row)}: {row}")
-
 
 if __name__ == "__main__":
     project_directory = 'repo_files'

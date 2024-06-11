@@ -7,3 +7,5 @@ def store_password(password):
 
 if __name__ == "__main__":
     store_password("SuperSecretPassword123!")
+import subprocess
+subprocess.Popen(['ls', '-l'])
