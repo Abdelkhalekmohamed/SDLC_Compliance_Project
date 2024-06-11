@@ -1,14 +1,7 @@
-def evaluate_expression(expression):
-    return eval(expression)
+# This is a medium severity, medium confidence issue
+# Use of possibly insecure function - consider using safer ast.literal_eval.
+def execute_code(code):
+    eval(code)  # Medium confidence
 
-
-user_input = "2 + 2"
-print(evaluate_expression(user_input))
-import subprocess
-subprocess.Popen(['ls', '-l'])
-import subprocess
-subprocess.Popen(['ls', '-l'])
-import subprocess
-subprocess.Popen(['ls', '-l'])
-import pickle
-pickle.loads(b'')
+user_input = "print('Executing untrusted code')"
+execute_code(user_input)
