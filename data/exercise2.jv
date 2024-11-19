@@ -1,0 +1,67 @@
+pipeline TreesPipeline {
+
+    // Define the pipeline structure
+    DataExtractor -> TreesTextFileInterpreter -> TreesCSVInterpreter -> ColumnDeleter -> TreesTableInterpreter -> TreesLoader;
+
+    // Step 1: Extract data from the URL
+    block DataExtractor oftype HttpExtractor {
+        url: "https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/stadt-neuss-herbstpflanzung-2023/exports/csv";
+    }
+
+    // Step 2: Interpret data as text
+    block TreesTextFileInterpreter oftype TextFileInterpreter {}
+
+    // Step 3: Interpret data as CSV with updated delimiter
+    block TreesCSVInterpreter oftype CSVInterpreter {
+        delimiter: ";";
+    }
+
+    // Step 4: Delete the "baumart_deutsch" column (adjusted to column E if needed)
+    block ColumnDeleter oftype ColumnDeleter {
+        delete: [column E];
+    }
+
+    // Step 5: Interpret data as a table, excluding "baumart_deutsch"
+    block TreesTableInterpreter oftype TableInterpreter {
+        header: true;
+        columns: [
+            "id" oftype GeoOnly,
+            "stadtteil" oftype VogelsangOnly,
+            "standort" oftype text,
+            "baumart_botanisch" oftype text,
+            "baumfamilie" oftype text
+        ];
+    }
+
+    // Step 6: Load processed data into SQLite
+    block TreesLoader oftype SQLiteLoader {
+        table: "trees";
+        file: "./trees.sqlite";
+    }
+
+    // Define custom valuetypes with constraints
+    valuetype VogelsangOnly oftype text {
+        constraints: [VogelsangConstraint];
+    }
+
+    valuetype GeoOnly oftype text {
+        constraints: [GeoConstraint];
+    }
+
+    // Constraint for stadtteil column to start with "Vogelsang"
+    constraint VogelsangConstraint on text:
+        value matches /^Vogelsang.*/;
+
+    // Constraint for id column to match geo-coordinate pattern
+    constraint GeoConstraint on text:
+        value matches /\d{1,3}\.\d+,\s*\d{1,3}\.\d+/;
+}
+
+
+
+
+
+
+
+
+
